@@ -13,7 +13,7 @@
 <%@ Import Namespace="System.Collections" %>
 
 <script language="C#" runat="server">
-    
+
     public class tAlgebra
     {
         public tAlgebra()
@@ -132,7 +132,18 @@
 
         public static double GetCosAngleV1V2(double v1x, double v1y, double v1z, double v2x, double v2y, double v2z)
         {
-            // cos(t) = (v.w) / (|v|.|w|) = (v.w) / 1
+            /* incident angle
+             intersection pt (i)
+             double ix, iy, iz;
+             ix = px+t*vx;
+             iy = py+t*vy;
+             iz = pz+t*vz;
+             normal at i
+             double nx, ny, nz;
+             nx = ix - cx;
+             ny = iy - cy;
+             nz = iz - cz;
+             cos(t) = (v.w) / (|v|.|w|) = (v.w) / 1 */
             return Dot3(v1x, v1y, v1z, v2x, v2y, v2z);
         }
 
@@ -270,11 +281,10 @@
             // x,y,z = p+tv 
             // At2 + Bt + C = 0
 
-
             double A = (vx * vx + vy * vy + vz * vz);
             double B = 2.0 * (px * vx + py * vy + pz * vz - vx * cx - vy * cy - vz * cz);
             double C = px * px - 2 * px * cx + cx * cx + py * py - 2 * py * cy + cy * cy + pz * pz - 2 * pz * cz + cz * cz - radius * radius;
-            double D = B * B - 4 * A * C;
+            double D = B * B - 4 * A * C;// delta
             double t = -1.0;
             if (D >= 0)
             {
@@ -309,25 +319,215 @@
         System.Collections.ArrayList obj3dArrayList;
         obj3dArrayList = new System.Collections.ArrayList();
         tSphere sph1 = new tSphere(0.01, 0.001, 10, 200.0, 0.0, 0.0, 255.0);
-        
-        // ambient properties for the material   
-        sph1.ambientR = 0.329412;
-        sph1.ambientG = 0.223529;
-        sph1.ambientB = 0.027451;
 
-        // specular properties for the material   
-        sph1.specularR = 0.992157;
-        sph1.specularG = 0.941176;
-        sph1.specularB = 0.807843;
-        sph1.shininess = 27.8974;
+        #region Materials
+        //// ambient properties for the emerald   
+        //sph1.ambientR = 0.0215;
+        //sph1.ambientG = 0.1745;
+        //sph1.ambientB = 0.0215;
 
-        sph1.diffuseR = 0.780392;
-        sph1.diffuseG = 0.568627;
-        sph1.diffuseB = 0.113725;
-        
+        //// specular properties for the emerald   
+        //sph1.specularR = 0.633;
+        //sph1.specularG = 0.727811;
+        //sph1.specularB = 0.633;
+        //sph1.shininess = 0.6;
+
+        //// diffuse properties for the emerald 
+        //sph1.diffuseR = 0.780392;
+        //sph1.diffuseG = 0.61424;
+        //sph1.diffuseB = 0.07568;
+
+        //// ambient properties for the jade   
+        //sph1.ambientR = 0.135;
+        //sph1.ambientG = 0.2225;
+        //sph1.ambientB = 0.1575;
+
+        //// specular properties for the jade   
+        //sph1.specularR = 0.316228;
+        //sph1.specularG = 0.316228;
+        //sph1.specularB = 0.316228;
+        //sph1.shininess = 0.1;
+
+        //// diffuse properties for the jade 
+        //sph1.diffuseR = 0.54;
+        //sph1.diffuseG = 0.89;
+        //sph1.diffuseB = 0.63;
+
+        //// ambient properties for the obsidian   
+        //sph1.ambientR = 0.05375;
+        //sph1.ambientG = 0.05;
+        //sph1.ambientB = 0.06625;
+
+        //// specular properties for the obsidian   
+        //sph1.specularR = 0.332741;
+        //sph1.specularG = 0.328634;
+        //sph1.specularB = 0.346435;
+        //sph1.shininess = 0.3;
+
+        //// diffuse properties for the obsidian 
+        //sph1.diffuseR = 0.18275;
+        //sph1.diffuseG = 0.17;
+        //sph1.diffuseB = 0.22525;
+
+        //// ambient properties for the pearl   
+        //sph1.ambientR = 0.25;
+        //sph1.ambientG = 0.20725;
+        //sph1.ambientB = 0.20725;
+
+        //// specular properties for the pearl   
+        //sph1.specularR = 0.296648;
+        //sph1.specularG = 0.296648;
+        //sph1.specularB = 0.296648;
+        //sph1.shininess = 0.088;
+
+        //// diffuse properties for the pearl 
+        //sph1.diffuseR = 1;
+        //sph1.diffuseG = 0.829;
+        //sph1.diffuseB = 0.829;
+
+        //// ambient properties for the ruby   
+        //sph1.ambientR = 0.1745;
+        //sph1.ambientG = 0.01175;
+        //sph1.ambientB = 0.01175;
+
+        //// specular properties for the ruby   
+        //sph1.specularR = 0.727811;
+        //sph1.specularG = 0.626959;
+        //sph1.specularB = 0.626959;
+        //sph1.shininess = 0.6;
+
+        //// diffuse properties for the ruby 
+        //sph1.diffuseR = 0.61424;
+        //sph1.diffuseG = 0.04136;
+        //sph1.diffuseB = 0.04136;
+
+        //// ambient properties for the turquoise   
+        //sph1.ambientR = 0.1;
+        //sph1.ambientG = 0.18725;
+        //sph1.ambientB = 0.1745;
+
+        //// specular properties for the turquoise   
+        //sph1.specularR = 0.297254;
+        //sph1.specularG = 0.30829;
+        //sph1.specularB = 0.306678;
+        //sph1.shininess = 0.1;
+
+        //// diffuse properties for the turquoise 
+        //sph1.diffuseR = 0.396;
+        //sph1.diffuseG = 0.74151;
+        //sph1.diffuseB = 0.69102;
+
+        //// ambient properties for the brass   
+        //sph1.ambientR = 0.329412;
+        //sph1.ambientG = 0.223529;
+        //sph1.ambientB = 0.027451;
+
+        //// specular properties for the brass   
+        //sph1.specularR = 0.992157;
+        //sph1.specularG = 0.941176;
+        //sph1.specularB = 0.807843;
+        //sph1.shininess = 0.21794872;
+
+        //// diffuse properties for the brass 
+        //sph1.diffuseR = 0.780392;
+        //sph1.diffuseG = 0.568627;
+        //sph1.diffuseB = 0.113725;
+
+        //// ambient properties for the bronze   
+        //sph1.ambientR = 0.2125;
+        //sph1.ambientG = 0.1275;
+        //sph1.ambientB = 0.054;
+
+        //// specular properties for the bronze   
+        //sph1.specularR = 0.393548;
+        //sph1.specularG = 0.271906;
+        //sph1.specularB = 0.166721;
+        //sph1.shininess = 0.2;
+
+        //// diffuse properties for the bronze 
+        //sph1.diffuseR = 0.714;
+        //sph1.diffuseG = 0.4284;
+        //sph1.diffuseB = 0.18144;
+
+        //// ambient properties for the chrome   
+        //sph1.ambientR = 0.25;
+        //sph1.ambientG = 0.25;
+        //sph1.ambientB = 0.25;
+
+        //// specular properties for the chrome   
+        //sph1.specularR = 0.774597;
+        //sph1.specularG = 0.774597;
+        //sph1.specularB = 0.774597;
+        //sph1.shininess = 0.6;
+
+        //// diffuse properties for the chrome 
+        //sph1.diffuseR = 0.4;
+        //sph1.diffuseG = 0.4;
+        //sph1.diffuseB = 0.4;
+
+        //// ambient properties for the copper   
+        //sph1.ambientR = 0.19125;
+        //sph1.ambientG = 0.0735;
+        //sph1.ambientB = 0.0225;
+
+        //// specular properties for the copper   
+        //sph1.specularR = 0.256777;
+        //sph1.specularG = 0.137622;
+        //sph1.specularB = 0.086014;
+        //sph1.shininess = 0.1;
+
+        //// diffuse properties for the copper 
+        //sph1.diffuseR = 0.7038;
+        //sph1.diffuseG = 0.27048;
+        //sph1.diffuseB = 0.0828;
+
+        //// ambient properties for the gold   
+        //sph1.ambientR = 0.24725;
+        //sph1.ambientG = 0.1995;
+        //sph1.ambientB = 0.0745;
+
+        //// specular properties for the gold   
+        //sph1.specularR = 0.628281;
+        //sph1.specularG = 0.555802;
+        //sph1.specularB = 0.366065;
+        //sph1.shininess = 0.4;
+
+        //// diffuse properties for the gold 
+        //sph1.diffuseR = 0.75164;
+        //sph1.diffuseG = 0.60648;
+        //sph1.diffuseB = 0.22648;
+
+        // ambient properties for the silver   
+        sph1.ambientR = 0.19225;
+        sph1.ambientG = 0.19225;
+        sph1.ambientB = 0.19225;
+
+        // specular properties for the silver   
+        sph1.specularR = 0.508273;
+        sph1.specularG = 0.508273;
+        sph1.specularB = 0.508273;
+        sph1.shininess = 0.4;
+
+        // diffuse properties for the silver 
+        sph1.diffuseR = 0.50754;
+        sph1.diffuseG = 0.50754;
+        sph1.diffuseB = 0.50754;
+        #endregion
         obj3dArrayList.Add(sph1);
-        
+
         Graphics graphics = g;
+        //// viewer position
+        //double px = (double)Session["eyex"],
+        //py = (double)Session["eyey"],
+        //pz = (double)Session["eyez"];
+        //// light position
+        //double lpx = (double)Session["lpx"],
+        //lpy = (double)Session["lpy"],
+        //lpz = (double)Session["lpz"];
+        //// light direction
+        //double lvx = (double)Session["lvx"],
+        //lvy = (double)Session["lvy"],
+        //lvz = (double)Session["lvz"];
 
         double px = 0.0;
         double py = 0.0;
@@ -410,7 +610,7 @@
                     cosf = tAlgebra.GetCosAngleV1V2(vx, vy, vz, vReflX, vReflY, vReflZ);
 
                     double result1 = Math.Max(0, cost) * 255.0;
-                    double result2 = Math.Pow(Math.Max(0, cosf), spherehit.shininess) * 255.0;
+                    double result2 = Math.Pow(Math.Max(0, cosf), spherehit.shininess*100) * 255.0;
 
                     double rgbR = (spherehit.ambientR * 255.0) + (spherehit.diffuseR * result1) + (spherehit.specularR * result2);
                     double rgbG = (spherehit.ambientG * 255.0) + (spherehit.diffuseG * result1) + (spherehit.specularG * result2);
